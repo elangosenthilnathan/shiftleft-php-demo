@@ -10,6 +10,8 @@ on:
 jobs:
   NextGen-Static-Analysis:
     runs-on: ubuntu-latest
+    container: shiftleft/core:latest
+    
     steps:
     - uses: actions/checkout@v3
     - name: Download ShiftLeft CLI
