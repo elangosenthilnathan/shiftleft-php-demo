@@ -10,7 +10,7 @@ on:
 jobs:
   NextGen-Static-Analysis:
     runs-on: ubuntu-latest
-    container: enjoyelan/shiftleft:latest
+    container: shiftleft/core:latest
     
     steps:
     - uses: actions/checkout@v3
