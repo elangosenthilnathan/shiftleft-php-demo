@@ -1,7 +1,7 @@
 ---
 # This workflow integrates qwiet.ai preZero with GitHub
 # Visit https://docs.shiftleft.io for help
-name: ShiftLeft
+name: qwiet.ai
 
 on:
   pull_request:
@@ -10,28 +10,28 @@ on:
 jobs:
   NextGen-Static-Analysis:
     runs-on: ubuntu-latest
-    container: shiftleft/core:latest
-    
     steps:
     - uses: actions/checkout@v3
     - name: Download ShiftLeft CLI
       run: |
         curl https://cdn.shiftleft.io/download/sl > ${GITHUB_WORKSPACE}/sl && chmod a+rx ${GITHUB_WORKSPACE}/sl
-    - name: Extract branch name
-      shell: bash
-      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-      id: extract_branch
+
     - name: preZero Static Analysis
       run: |
         ${GITHUB_WORKSPACE}/sl --version
-        ${GITHUB_WORKSPACE}/sl analyze --verbose --strict --wait --app shiftleft-php-demo --container 18fgsa/s3-resource --tag branch=${{ github.head_ref || steps.extract_branch.outputs.branch }} --php --cpg $(pwd)
+        ${GITHUB_WORKSPACE}/sl analyze --strict --wait \
+          --app shiftleft-php-demo \
+          --tag branch=${{ github.head_ref }} \
+          --php --container 18fgsa/s3-resource $(pwd)
       env:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
         SHIFTLEFT_API_HOST: www.shiftleft.io
         SHIFTLEFT_GRPC_TELEMETRY_HOST: telemetry.shiftleft.io:443
         SHIFTLEFT_GRPC_API_HOST: api.shiftleft.io:443
-  Build-Rules: 
+
+  Build-Rules:
     runs-on: ubuntu-latest
+    permissions: write-all
     needs: NextGen-Static-Analysis
     steps:
     - uses: actions/checkout@v3
@@ -49,5 +49,6 @@ jobs:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
         SHIFTLEFT_API_HOST: www.shiftleft.io
         SHIFTLEFT_GRPC_TELEMETRY_HOST: telemetry.shiftleft.io:443
-        SHIFTLEFT_GRPC_API_HOST: api.shiftleft.io:443 
-  
+        SHIFTLEFT_GRPC_API_HOST: api.shiftleft.io:443
+
+
