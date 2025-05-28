@@ -12,12 +12,12 @@ jobs:
       image: shiftleft/core:latest
     steps:
     - uses: actions/checkout@v3
-    - name: Download ShiftLeft CLI
-      run: |
-        php -v
-        curl https://cdn.shiftleft.io/download/sl > ${GITHUB_WORKSPACE}/sl && chmod a+rx ${GITHUB_WORKSPACE}/sl
+    # - name: Download ShiftLeft CLI
+    #   run: |
+    #     php -v
+    #     curl https://cdn.shiftleft.io/download/sl > ${GITHUB_WORKSPACE}/sl && chmod a+rx ${GITHUB_WORKSPACE}/sl
 
     - name: NextGen Static Analysis
-      run: ${GITHUB_WORKSPACE}/sl analyze --strict --wait --app javaApp1 --javasrc --cpg .
+      run: sl analyze --strict --wait --app shiftleft-php-demo  .
       env:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
