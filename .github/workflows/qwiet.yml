@@ -18,6 +18,10 @@ jobs:
     #     curl https://cdn.shiftleft.io/download/sl > ${GITHUB_WORKSPACE}/sl && chmod a+rx ${GITHUB_WORKSPACE}/sl
 
     - name: NextGen Static Analysis
-      run: sl analyze --strict --wait --app shiftleft-php-demo --verbose  .
+      run: |
+        sl analyze --strict --wait --app shiftleft-php-demo --verbose  .
+        echo "+++++++++++++++++++++++++++"
+        ls -lart ~/.shiftleft
+      
       env:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
