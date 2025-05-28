@@ -21,7 +21,7 @@ jobs:
       run: |
         sl analyze --strict --wait --app shiftleft-php-demo --verbose  .
         echo "+++++++++++++++++++++++++++"
-        ls -lart ~/.shiftleft
+        ls -lart /opt/sl-cli/
       
       env:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
